@@ -10,7 +10,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #121212;
             margin: 0;
         }
         button {
@@ -18,25 +18,25 @@
             height: 100px;
             border-radius: 50%;
             border: none;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
+            background: url('i.webp') no-repeat center/cover;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
         button:active {
-            background-color: #0056b3;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <button onclick="setVolumeAndPlay()">🔊</button>
+    <button onclick="setVolumeAndPlay()"></button>
     <audio id="audio" src="ston-1488.mp3" preload="auto"></audio>
     
     <script>
         function setVolumeAndPlay() {
             const audio = document.getElementById('audio');
-            audio.volume = 0.5;
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+                audio.volume = 0.5;
+            }
             audio.play().then(() => {
                 console.log('Звук воспроизводится');
             }).catch(error => {
