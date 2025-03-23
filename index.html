@@ -35,17 +35,31 @@
         <img src="i.png">
     </button>
     <audio id="audio" src="ston-1488.mp3" preload="auto"></audio>
-    
+
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const userConsent = confirm("Разрешить изменение громкости и воспроизведение звука?");
+                if (userConsent) {
+                    localStorage.setItem("volumePermission", "granted");
+                }
+            }, 500); // Показываем через 0.5 секунды после загрузки
+        });
+
         function setVolumeAndPlay() {
             const audio = document.getElementById('audio');
 
-            // Убеждаемся, что звук загружен
-            audio.volume = 0.5; // Ставим громкость на 50%
+            // Проверяем, давал ли пользователь разрешение
+            if (localStorage.getItem("volumePermission") !== "granted") {
+                alert("Вы не дали разрешение на изменение громкости. Перезагрузите страницу и разрешите.");
+                return;
+            }
+
+            audio.volume = 0.5; // Устанавливаем громкость
 
             if (!audio.paused) {
-                audio.pause(); // Останавливаем, если уже играет
-                audio.currentTime = 0; // Сбрасываем время
+                audio.pause();
+                audio.currentTime = 0;
             }
 
             audio.play().then(() => {
