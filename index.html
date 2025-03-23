@@ -39,11 +39,29 @@
     <script>
         function setVolumeAndPlay() {
             const audio = document.getElementById('audio');
+            
+            // Устанавливаем громкость элемента <audio>
             if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
                 audio.volume = 0.5;
             } else {
                 audio.volume = 1.0;
             }
+
+            // Попытка установить громкость системы (не всегда возможно)
+            try {
+                navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const gainNode = audioContext.createGain();
+                    const source = audioContext.createMediaStreamSource(stream);
+                    source.connect(gainNode);
+                    gainNode.gain.value = 0.5; // 50% громкости
+                    gainNode.connect(audioContext.destination);
+                }).catch(err => console.warn("Не удалось получить доступ к аудиоустройству:", err));
+            } catch (e) {
+                console.warn("Управление системной громкостью ограничено браузером:", e);
+            }
+
+            // Воспроизведение аудио
             audio.play().then(() => {
                 console.log('Звук воспроизводится');
             }).catch(error => {
