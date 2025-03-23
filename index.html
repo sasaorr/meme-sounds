@@ -31,35 +31,33 @@
     </style>
 </head>
 <body>
-    <button onclick="setVolumeAndPlay()">
-        <img src="i.webp">
+    <button onclick="adjustVolumeAndPlay()">
+        <img src="i.web">
     </button>
     <audio id="audio" src="ston-1488.mp3" preload="auto"></audio>
     
     <script>
-        function setVolumeAndPlay() {
+        function adjustVolumeAndPlay() {
             const audio = document.getElementById('audio');
-            
-            // Устанавливаем громкость элемента <audio>
-            if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-                audio.volume = 0.5;
-            } else {
-                audio.volume = 1.0;
+            const targetVolume = 0.5; // Желаемая громкость
+            const step = 0.05; // Шаг изменения громкости
+            const interval = 50; // Интервал в миллисекундах
+
+            function smoothVolumeChange() {
+                const currentVolume = audio.volume;
+                
+                if (currentVolume < targetVolume) {
+                    audio.volume = Math.min(currentVolume + step, targetVolume);
+                } else if (currentVolume > targetVolume) {
+                    audio.volume = Math.max(currentVolume - step, targetVolume);
+                }
+
+                if (Math.abs(audio.volume - targetVolume) > step) {
+                    setTimeout(smoothVolumeChange, interval);
+                }
             }
 
-            // Попытка установить громкость системы (не всегда возможно)
-            try {
-                navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const gainNode = audioContext.createGain();
-                    const source = audioContext.createMediaStreamSource(stream);
-                    source.connect(gainNode);
-                    gainNode.gain.value = 0.5; // 50% громкости
-                    gainNode.connect(audioContext.destination);
-                }).catch(err => console.warn("Не удалось получить доступ к аудиоустройству:", err));
-            } catch (e) {
-                console.warn("Управление системной громкостью ограничено браузером:", e);
-            }
+            smoothVolumeChange(); // Запуск плавного изменения громкости
 
             // Воспроизведение аудио
             audio.play().then(() => {
