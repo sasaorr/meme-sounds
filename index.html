@@ -32,7 +32,7 @@
 </head>
 <body>
     <button onclick="setVolumeAndPlay()">
-        <img src="i.png">
+        <img src="i.png" alt="Play">
     </button>
     <audio id="audio" src="ston-1488.mp3" preload="auto"></audio>
 
@@ -45,10 +45,12 @@
                 audio.currentTime = 0;
             }
 
+            // Устанавливаем громкость перед воспроизведением
+            audio.volume = 0.5;
+            console.log('Громкость установлена на 50%');
+
             audio.play().then(() => {
                 console.log('Звук воспроизводится');
-                audio.volume = 0.5; // Сразу устанавливаем громкость 50%
-                console.log('Громкость установлена на 50%');
             }).catch(error => {
                 console.error('Ошибка воспроизведения:', error);
                 alert('Ошибка: браузер заблокировал воспроизведение. Попробуйте кликнуть еще раз.');
