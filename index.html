@@ -34,8 +34,10 @@
     <script>
         function setVolumeAndPlay() {
             const audio = document.getElementById('audio');
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
+            if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
                 audio.volume = 0.5;
+            } else {
+                audio.volume = 1.0;
             }
             audio.play().then(() => {
                 console.log('Звук воспроизводится');
