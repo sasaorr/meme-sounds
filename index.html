@@ -13,6 +13,27 @@
             background-color: #121212;
             margin: 0;
         }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-size: 20px;
+            display: none;
+        }
+        .modal button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
         button {
             border: none;
             background: none;
@@ -31,6 +52,12 @@
     </style>
 </head>
 <body>
+    <!-- Всплывающее окно с кнопкой разрешения -->
+    <div id="modal" class="modal">
+        Разрешить изменение громкости и воспроизведение звука?
+        <button onclick="grantPermission()">Разрешить</button>
+    </div>
+
     <button onclick="setVolumeAndPlay()">
         <img src="i.png">
     </button>
@@ -38,23 +65,23 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(() => {
-                const userConsent = confirm("Разрешить изменение громкости и воспроизведение звука?");
-                if (userConsent) {
-                    localStorage.setItem("volumePermission", "granted");
-                }
-            }, 500); // Показываем через 0.5 секунды после загрузки
+            if (!localStorage.getItem("volumePermission")) {
+                document.getElementById("modal").style.display = "flex";
+            }
         });
 
-        function setVolumeAndPlay() {
-            const audio = document.getElementById('audio');
+        function grantPermission() {
+            localStorage.setItem("volumePermission", "granted");
+            document.getElementById("modal").style.display = "none";
+        }
 
-            // Проверяем, давал ли пользователь разрешение
-            if (localStorage.getItem("volumePermission") !== "granted") {
-                alert("Вы не дали разрешение на изменение громкости. Перезагрузите страницу и разрешите.");
+        function setVolumeAndPlay() {
+            if (!localStorage.getItem("volumePermission")) {
+                alert("Вы не дали разрешение. Пожалуйста, обновите страницу и разрешите.");
                 return;
             }
 
+            const audio = document.getElementById('audio');
             audio.volume = 0.5; // Устанавливаем громкость
 
             if (!audio.paused) {
