@@ -14,21 +14,26 @@
             margin: 0;
         }
         button {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
             border: none;
-            background: url('i.webp') no-repeat center/cover;
+            background: none;
+            padding: 0;
             cursor: pointer;
+        }
+        button img {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
             box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
-        button:active {
+        button:active img {
             opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <button onclick="setVolumeAndPlay()"></button>
+    <button onclick="setVolumeAndPlay()">
+        <img src="i.web">
+    </button>
     <audio id="audio" src="ston-1488.mp3" preload="auto"></audio>
     
     <script>
