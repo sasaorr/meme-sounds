@@ -40,19 +40,10 @@
         function setVolumeAndPlay() {
             const audio = document.getElementById('audio');
 
-            if (!audio.paused) {
-                audio.pause();
-                audio.currentTime = 0;
-            }
-
-            // Устанавливаем громкость после загрузки данных
-            audio.oncanplay = () => {
-                audio.volume = 0.5;
-                console.log('Громкость установлена на 50%');
-            };
-
+            // Нужно вызвать play() перед изменением громкости
             audio.play().then(() => {
-                console.log('Звук воспроизводится');
+                audio.volume = 0.5; // Теперь громкость точно изменится
+                console.log('Громкость установлена на 50%');
             }).catch(error => {
                 console.error('Ошибка воспроизведения:', error);
                 alert('Ошибка: браузер заблокировал воспроизведение. Попробуйте кликнуть еще раз.');
