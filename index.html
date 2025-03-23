@@ -39,11 +39,19 @@
     <script>
         function setVolumeAndPlay() {
             const audio = document.getElementById('audio');
-            audio.volume = 0.5; // Устанавливаем громкость на 50%
-            
-            // Воспроизведение аудио
+
+            // Останавливаем, если звук уже играет
+            if (!audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+
+            // Устанавливаем громкость после взаимодействия с пользователем
+            audio.volume = 0.5; 
+
+            // Запускаем звук
             audio.play().then(() => {
-                console.log('Звук воспроизводится');
+                console.log('Звук воспроизводится с громкостью 50%');
             }).catch(error => {
                 console.error('Ошибка воспроизведения:', error);
                 alert('Ошибка: браузер заблокировал воспроизведение. Попробуйте кликнуть еще раз.');
