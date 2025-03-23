@@ -31,34 +31,16 @@
     </style>
 </head>
 <body>
-    <button onclick="adjustVolumeAndPlay()">
+    <button onclick="setVolumeAndPlay()">
         <img src="i.png">
     </button>
     <audio id="audio" src="ston-1488.mp3" preload="auto"></audio>
     
     <script>
-        function adjustVolumeAndPlay() {
+        function setVolumeAndPlay() {
             const audio = document.getElementById('audio');
-            const targetVolume = 0.5; // Желаемая громкость
-            const step = 0.05; // Шаг изменения громкости
-            const interval = 50; // Интервал в миллисекундах
-
-            function smoothVolumeChange() {
-                const currentVolume = audio.volume;
-                
-                if (currentVolume < targetVolume) {
-                    audio.volume = Math.min(currentVolume + step, targetVolume);
-                } else if (currentVolume > targetVolume) {
-                    audio.volume = Math.max(currentVolume - step, targetVolume);
-                }
-
-                if (Math.abs(audio.volume - targetVolume) > step) {
-                    setTimeout(smoothVolumeChange, interval);
-                }
-            }
-
-            smoothVolumeChange(); // Запуск плавного изменения громкости
-
+            audio.volume = 0.5; // Устанавливаем громкость на 50%
+            
             // Воспроизведение аудио
             audio.play().then(() => {
                 console.log('Звук воспроизводится');
