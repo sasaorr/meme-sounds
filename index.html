@@ -7,17 +7,21 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #121212;
             margin: 0;
+            color: white;
+            font-family: Arial, sans-serif;
         }
         button {
             border: none;
             background: none;
             padding: 0;
             cursor: pointer;
+            margin-bottom: 20px;
         }
         button img {
             width: 120px;
@@ -28,26 +32,38 @@
         button:active img {
             opacity: 0.8;
         }
+        input[type="range"] {
+            width: 200px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <button onclick="setVolumeAndPlay()">
+    <button onclick="playSound()">
         <img src="i.png" alt="Кнопка воспроизведения звука">
     </button>
-    <audio id="audio" src="ston-1488.mp3" preload="auto"></audio>
+    
+    <label for="volume">Громкость:</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" oninput="changeVolume(this.value)">
 
     <script>
-        function setVolumeAndPlay() {
-            const audio = document.getElementById('audio');
+        let audio = new Audio("ston-1488.mp3"); // Создание объекта Audio
+        audio.volume = 0.5; // Установка начальной громкости
 
-            // Нужно вызвать play() перед изменением громкости
+        function playSound() {
+            audio.pause(); // Останавливаем предыдущий звук
+            audio.currentTime = 0; // Перематываем на начало
             audio.play().then(() => {
-                audio.volume = 0.5; // Теперь громкость точно изменится
-                console.log('Громкость установлена на 50%');
+                console.log("Звук воспроизводится с громкостью", audio.volume);
             }).catch(error => {
-                console.error('Ошибка воспроизведения:', error);
-                alert('Ошибка: браузер заблокировал воспроизведение. Попробуйте кликнуть еще раз.');
+                console.error("Ошибка воспроизведения:", error);
+                alert("Ошибка: браузер заблокировал воспроизведение. Попробуйте кликнуть еще раз.");
             });
+        }
+
+        function changeVolume(value) {
+            audio.volume = value;
+            console.log("Громкость изменена:", value);
         }
     </script>
 </body>
